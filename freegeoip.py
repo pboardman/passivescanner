@@ -16,5 +16,9 @@ class Freegeoip:
         if req.getcode() != 200:
             raise ValueError("Could not get ip info for: {}".format(ip))
 
-        self.info = json.loads(req.read())
+        ret = req.read()
+        # Depending on the python version we get a string or a bytes...
+        ret = ret if isinstance(ret, str) else ret.decode('utf-8')
+
+        self.info = json.loads(ret)
         return self.info
