@@ -3,14 +3,11 @@
 import jinja2
 import os
 import sqlite3
-import traceback
-from sanic import Sanic
-from sanic.response import html
+from flask import Flask
+from flask import render_template
 
 
-app = Sanic()
-jinja_env = jinja2.Environment(loader=jinja2.FileSystemLoader('.'))
-db_conn = sqlite3.connect('data.db')
+app = Flask(__name__)
 
 
 def main():
@@ -18,16 +15,13 @@ def main():
 
 
 @app.route('/')
-async def show_map(request):
-
+def show_map():
+    db_conn = sqlite3.connect('data.db')
     c = db_conn.cursor()
     c.execute("SELECT IP, Latitude, Longitude, Port, Country, Region, City, Timezone, ConnDate, count(IP) FROM Scanners GROUP BY IP")
     result = c.fetchall()
 
-    template = jinja_env.get_template('template.html')
-    render = template.render(locations= result)
-
-    return html(render)
+    return render_template('./template.html', locations=result)
 
 
 if __name__ == "__main__":
