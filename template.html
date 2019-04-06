@@ -1,0 +1,35 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>MAP</title>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.4.0/dist/leaflet.css"
+        integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA=="
+        crossorigin=""/>
+</head>
+
+<body>
+    <script src="https://unpkg.com/leaflet@1.4.0/dist/leaflet.js"
+            integrity="sha512-QVftwZFqvtRNi0ZyCtsznlKSWOStnDORoefr1enyq5mVL4tmKB3S/EnC3rRJcxCPavG10IcrVGSmPh6Qw5lwrg=="
+            crossorigin=""></script>
+
+    <div id="mapid" style="width: 1920px; height: 1080px;"></div>
+
+    <script>
+        var mymap = L.map('mapid').setView([0, 0], 3);
+
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+	    maxZoom: 19,
+	    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(mymap);
+
+    {% for location in locations %}
+        var marker = L.marker([{{ location[1] }}, {{ location[2] }}]).addTo(mymap);
+        marker.bindPopup("<b>{{ location[0] }}</b><br>Port: {{ location[3] }}<br>Loc: {{ location[4] }},{{ location[5] }},{{ location[6] }}<br>Timezone: {{ location[7] }}<br>Number of connection(s):{{ location[9] }}");
+    {% endfor %}
+    </script>
+</body>
+</html>
