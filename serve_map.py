@@ -21,7 +21,7 @@ def show_map():
     c.execute("SELECT IP, Latitude, Longitude, Port, Country, Region, City, Timezone, ConnDate, count(IP) FROM Scanners GROUP BY IP")
     result = c.fetchall()
 
-    return render_template('./template.html', locations=result)
+    return render_template('template.html', locations=result)
 
 
 if __name__ == "__main__":
